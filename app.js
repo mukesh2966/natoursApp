@@ -9,6 +9,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/AppError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -27,6 +28,28 @@ app.set('views', path.join(__dirname, 'views')); // try to always use this path 
 // console.log('this is a test path ::::', path.join(__dirname, 'views'));
 ///////////////////////////////////////////////////////
 // 1) GLOBAL MIDDLEWARES
+
+////////////////////-----------------------------
+/////----- FOR ENABLING CROSS ORIGIN RESOURCE SHARING for our entire API
+app.use(cors());
+// this gonna add couple of headers to our response
+// Access-Control-Allow-Origin header to *
+///////--------------------------------------------------
+/// ----To allow only a particular Cross-Origin domain to access our API/resource
+// API at--- api.natour.com, FrontEnd AT--- natours.com
+// app
+//   .use(
+//     cors({
+//       origin: 'https://www.natours.com',
+//     })
+//   )
+//////////////////-----------------------------------
+/////--------the above was just for permitting simple requrests(get and post), while for non-simple requests(delete,patch,req with cookies or non-standard headers)----the browser automatically goes in preflight-phase, i.e., before executing the actual req it sends a options request(options is just another HTTP method) and then we at our server need to send the same Access-control-Allow-Origin header(same as implemented above for simple requests) to indicate the browser that the non-simple requests are allowed for CORS
+
+app.options('*', cors());
+// can also restrict to a particular route
+// app.options('/api/v1/tours/:id',cors());
+
 // SERVING STATIC FILES---all the static assests will be served from the public folder------used late in pug template
 // app.use(express.static(`${__dirname}/public`));
 app.use(express.static(path.join(__dirname, 'public')));
