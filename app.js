@@ -371,3 +371,5 @@ app.use(globalErrorHandler);
 // });
 
 module.exports = app;
+
+// Express app implemented
