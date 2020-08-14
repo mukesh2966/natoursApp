@@ -4,6 +4,7 @@
   "description": "project - node, express, mongoDB",
   "main": "app.js",
   "scripts": {
+    "start": "node server.js",
     "start:Dev": "nodemon server.js",
     "start:Prod": "NODE_ENV=production nodemon server.js",
     "debug": "ndb server.js",
