@@ -19,17 +19,12 @@ const bookBtn = document.getElementById('book-tour');
 // DELEGation
 if (mapBox) {
   const locations = JSON.parse(mapBox.dataset.locations);
-  console.log(locations);
+  // console.log(locations);
   displayMap(locations);
 }
 
-console.log('printtttttttttttttttttttttttttttttt');
-console.log('this will see if login form is selected', loginForm);
 // for login
 if (loginForm) {
-  console.log(
-    'log in.........\nlog in.........\nlog in.........\nlog in.........\nlog in.........\nlog in.........\nlog in.........\nlog in.........\nlog in.........\nlog in.........\nlog in.........\nlog in.........\n'
-  );
   loginForm.addEventListener('submit', (e) => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -62,15 +57,12 @@ if (updateUserDataForm) {
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
     form.append('photo', document.getElementById('photo').files[0]);
-    console.log('this is a form', form);
     updateSettings(form, 'data');
   });
 }
 
 if (updateUserPasswordForm) {
-  console.log('i rached here in password if block');
   updateUserPasswordForm.addEventListener('submit', async (e) => {
-    console.log('password change button clicked.');
     const passwordCurrent = document.getElementById('password-current').value;
     const password = document.getElementById('password').value;
     const passwordConfirm = document.getElementById('password-confirm').value;

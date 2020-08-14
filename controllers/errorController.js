@@ -77,7 +77,7 @@ const sendErrorProd = (error, req, res) => {
   // 2A----------- operational, trusted error: send msg to client
   // eslint-disable-next-line no-lonely-if
   if (error.isOperational) {
-    console.log(error);
+    // console.log(error);
     return res.status(error.statusCode).render('error', {
       title: 'Something went wrong!',
       msg: error.message,

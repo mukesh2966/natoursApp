@@ -34,7 +34,7 @@ app.get('/api/v1/tours', (req, res) => {
 
 // creating a variable called id, in a variable route
 app.get('/api/v1/tours/:id', (req, res) => {
-  console.log(req.params); // gives {id :'5'}
+  // console.log(req.params); // gives {id :'5'}
   // does the same for all such parameters in the request made
   // all the parameters must be defined, unless made optional.
   // /api/v1/tours/:id?/:yankei

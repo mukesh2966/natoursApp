@@ -11,11 +11,11 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) get the currently booked tour
   const tour = await Tour.findById(req.params.tourId);
 
-  if (!tour) {
-    console.log('no tour found');
-  } else {
-    console.log('tour found: ', tour.name);
-  }
+  // if (!tour) {
+  //   console.log('no tour found');
+  // } else {
+  //   console.log('tour found: ', tour.name);
+  // }
 
   // 2) Create checkout session
   const session = await stripe.checkout.sessions.create({

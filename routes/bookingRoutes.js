@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use(authController.protection);
 
-console.log('i am inside');
+// console.log('i am inside');
 router.get('/checkout-session/:tourId', bookingController.getCheckoutSession);
 
 // API ROUTES

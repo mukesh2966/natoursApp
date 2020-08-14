@@ -9,12 +9,12 @@ import { showAlert } from './alert';
 // type is either 'password' or 'data'
 // data is the data object containing either {name:name,email:email} or the password data
 export const updateSettings = async (data, type) => {
-  console.log('from updateUserData js');
+  // console.log('from updateUserData js');
   try {
     const url =
       type === 'data'
-        ? 'http://127.0.0.1:3000/api/v1/users/updateMe'
-        : 'http://127.0.0.1:3000/api/v1/users/updateMyPassword';
+        ? '/api/v1/users/updateMe'
+        : '/api/v1/users/updateMyPassword';
 
     const res = await axios({
       method: 'PATCH',
@@ -26,7 +26,7 @@ export const updateSettings = async (data, type) => {
       showAlert('success', `User ${type.toUpperCase()} Changed Successfully`);
     }
 
-    console.log(res);
+    // console.log(res);
   } catch (error) {
     showAlert('error', error.response.data.message);
   }

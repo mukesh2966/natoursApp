@@ -8,6 +8,7 @@ const express = require('express');
 // const fs = require('fs');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const AppError = require('./utils/AppError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -20,7 +21,7 @@ app.set('view engine', 'pug');
 // setting views folder--(folder containing templates)
 app.set('views', path.join(__dirname, 'views')); // try to always use this path module to join to paths, as it reduces the chances of a bug.
 
-console.log('this is a test path ::::', path.join(__dirname, 'views'));
+// console.log('this is a test path ::::', path.join(__dirname, 'views'));
 ///////////////////////////////////////////////////////
 // 1) GLOBAL MIDDLEWARES
 // SERVING STATIC FILES---all the static assests will be served from the public folder------used late in pug template
@@ -114,6 +115,10 @@ app.use(
 //   // important-- to continue the req-res cycle
 //   next();
 // });
+
+/////////////////////////------------------------------------------------
+//////////////-----COMPRESSION MIDDLEWARE USED
+app.use(compression()); // for compressing text(html,json etc.)
 
 // JUST SOME TEST MIDDLEWARE
 app.use((req, res, next) => {

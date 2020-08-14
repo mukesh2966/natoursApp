@@ -8,7 +8,7 @@
 // So, that later our mapbox.js can directly use it from there.
 
 const locations = JSON.parse(document.getElementById('map').dataset.locations);
-console.log(locations);
+// console.log(locations);
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoieG11a2VzaCIsImEiOiJja2RteDd4cjMxY25qMnhxMzUyOG9wcmk5In0.wMXa4G04WG1jSgTzsMS5Ug';

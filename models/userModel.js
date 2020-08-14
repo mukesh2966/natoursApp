@@ -49,7 +49,7 @@ const usersSchema = new mongoose.Schema(
         // this only works on create and save
         // so we need to update the user using save and not findoneandupdate
         validator: function (el) {
-          console.log('rannn');
+          // console.log('rannn');
           return el === this.password;
         },
         message: 'PasswordConfirmation does not match Password',
@@ -154,7 +154,7 @@ usersSchema.methods.createPasswordResetToken = function () {
     .digest('hex');
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
-  console.log({ resetToken, passwordResetToken: this.passwordResetToken });
+  // console.log({ resetToken, passwordResetToken: this.passwordResetToken });
 
   // sending unencrypted token to the user via mail
   return resetToken;
