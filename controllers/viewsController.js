@@ -122,11 +122,11 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
     });
 });
 
-exports.alert = (req, res, next) => {
+exports.alerts = (req, res, next) => {
   // const alert = req.query.alert;
   const { alert } = req.query;
   if (alert === 'booking') {
-    res.local.alert =
+    res.locals.alert =
       "Your booking was successful! Please check your eamil for confirmation. If your booking doesn't show up immidiately, please come back later.";
   }
   next();
