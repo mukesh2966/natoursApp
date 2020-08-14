@@ -35,7 +35,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
         images: [
           `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
         ],
-        amount: tour.price * 100,
+        amount: Math.ceil(tour.price * 74.89 * 100),
         currency: 'inr',
         quantity: 1,
       },
@@ -74,7 +74,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 const createBookingCheckout = async (session) => {
   const tour = session.client_reference_id;
   const user = (await User.findOne({ email: session.customer_email })).id;
-  const price = session.display_items[0].amount / 100;
+  const price = Math.ceil(session.display_items[0].amount / (74.89 * 100));
   await Booking.create({
     tour,
     user,
