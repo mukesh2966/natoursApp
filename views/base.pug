@@ -17,7 +17,7 @@ html
             link(href='https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css' rel='stylesheet')
             title Natours | #{title}
 
-    body
+    body(data-alert=`${alert ? alert : ''}`)
         // HEADER
         include _header
 

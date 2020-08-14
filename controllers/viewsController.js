@@ -110,8 +110,24 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   const tourIds = bookings.map((el) => el.tour);
   const tours = await Tour.find({ _id: { $in: tourIds } });
 
-  res.status(200).render('overview', {
-    title: 'My Booked Tours',
-    tours,
-  });
+  res
+    .status(200)
+    .set(
+      'Content-Security-Policy',
+      "default-src 'self' https://*.mapbox.com https://*.stripe.com ws://127.0.0.1:43003/ ;base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src https://cdnjs.cloudflare.com https://api.mapbox.com https://js.stripe.com 'self' blob: ;script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests;"
+    )
+    .render('overview', {
+      title: 'My Booked Tours',
+      tours,
+    });
 });
+
+exports.alert = (req, res, next) => {
+  // const alert = req.query.alert;
+  const { alert } = req.query;
+  if (alert === 'booking') {
+    res.local.alert =
+      "Your booking was successful! Please check your eamil for confirmation. If your booking doesn't show up immidiately, please come back later.";
+  }
+  next();
+};
