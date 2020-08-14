@@ -72,6 +72,7 @@ process.on('unhandledRejection', (error) => {
   // here should be a tool in place to again start
 });
 
+// For heroku specific shutdowns
 process.on('SIGTERM', () => {
   console.log('SIGTERM RECEIVED, Shutting down gracefully!!!!!!!!!!!!!!!!!');
   server.close(() => {
