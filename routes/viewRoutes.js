@@ -7,19 +7,19 @@ const router = express.Router();
 
 // router.use(authController.isLoggedIn);
 
-router.get(
-  '/',
-  bookingController.createBookingCheckout, // temperoray
-  authController.isLoggedIn,
-  viewsController.getOverview
-);
+router.get('/', authController.isLoggedIn, viewsController.getOverview);
 router.get('/tour/:slug', authController.isLoggedIn, viewsController.getTour);
 router.get('/me', authController.protection, viewsController.getAccount);
 
 // /login ---------route
 router.get('/login', authController.isLoggedIn, viewsController.getLoginForm);
 
-router.get('/my-tours', authController.protection, viewsController.getMyTours);
+router.get(
+  '/my-tours',
+  // bookingController.createBookingCheckout, // temperoray
+  authController.protection,
+  viewsController.getMyTours
+);
 
 /////Do not need this route as we implemented this by using API, and this below is for data submission/collection through form submit.
 // router.post(

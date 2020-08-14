@@ -10,9 +10,10 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const cors = require('cors');
-
+const bodyParser = require('body-parser');
 const AppError = require('./utils/AppError');
 const globalErrorHandler = require('./controllers/errorController');
+const bookingController = require('./controllers/bookingController');
 
 const app = express();
 
@@ -71,6 +72,20 @@ const limiter = rateLimit({
 // To limit number of requests from an IP in a limited time frame
 // to any route starting with /api
 app.use('/api', limiter);
+
+////////////////////////////-------------------------------
+///-------------------STRIPE Webhook Endpoint
+// this endpoint returns us the data(user-tour data) that we sent to stipe, but after a succesful payment(this particular webhook does so as we selected that type, we can select various other webhooks in stripe too.)
+app.post(
+  '/webhook-checkout',
+  bodyParser.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+);
+// This route is implemented here as the body that we receive with the request, we need it as a raw stream later on, and not in json format.
+// And just(express.json wala, actually 2 steps below) below this point exits the middleware that converts/parse all the data in req body to JSON form
+// So, this is a good place to implement this route
+// we will still parse the body but in raw form
+/////-------------------------------------------------
 
 // DEVELOPMENT LOGGING
 // console.log(process.env.NODE_ENV);
