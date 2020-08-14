@@ -72,6 +72,15 @@ process.on('unhandledRejection', (error) => {
   // here should be a tool in place to again start
 });
 
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECEIVED, Shutting down gracefully!!!!!!!!!!!!!!!!!');
+  server.close(() => {
+    console.log(
+      'Process terminated after SIGTERM graceful shutdown!!!!!!!!!!!!!!!!!!'
+    );
+  });
+});
+
 ////////////////////////////////////////////////////////////////
 
 // ERROR inside a middleware, directly triggers the global error handling middleware

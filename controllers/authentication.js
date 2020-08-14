@@ -14,20 +14,28 @@ const signToken = (id) => {
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
-  const cookieOptions = {
+  // const cookieOptions ={
+  //   expires: new Date(
+  //     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+  //   ),
+  //   // secure: true, // cookie will only be sent on a HTTPS connection
+  //   httpOnly: true, // this will make it so that the cookie cannot be accessed/modified by browsers
+  //   secure: req.secure || req.headers('x-forwarded-proto') === 'https',
+  // } ;
+
+  // if (process.env.NODE_ENV === 'prouction') cookieOptions.secure = true;
+
+  res.cookie('jwt', token, {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     // secure: true, // cookie will only be sent on a HTTPS connection
     httpOnly: true, // this will make it so that the cookie cannot be accessed/modified by browsers
-  };
-
-  if (process.env.NODE_ENV === 'prouction') cookieOptions.secure = true;
-
-  res.cookie('jwt', token, cookieOptions);
+    secure: req.secure || req.headers('x-forwarded-proto') === 'https',
+  });
 
   // Removes the password from client output
   user.password = undefined;
@@ -84,7 +92,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
   //     user: newUser,
   //   },
   // });
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -111,7 +119,7 @@ exports.login = catchAsync(async (req, res, next) => {
   //   status: 'success',
   //   token: token,
   // });
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 // middleware function for protecting secured routes
@@ -304,7 +312,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   //   status: 'success',
   //   token: token,
   // });
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
@@ -335,7 +343,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   //   status: 'success',
   //   token: token,
   // });
-  createSendToken(currentUser, 200, res);
+  createSendToken(currentUser, 200, req, res);
 });
 
 ///////-------------------------------------------

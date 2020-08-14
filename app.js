@@ -15,6 +15,9 @@ const globalErrorHandler = require('./controllers/errorController');
 
 const app = express();
 
+// enabling our express app to trust proxy(heroku specific)
+app.enable('trust proxy');
+
 ///////////-------SETTING UP PUG ENGINE----------------
 // Using pug for template filling
 app.set('view engine', 'pug');
