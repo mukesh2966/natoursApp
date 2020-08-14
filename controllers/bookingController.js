@@ -26,7 +26,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     // }&user=${req.user.id}&price=${tour.price}`,
     success_url: `${req.protocol}://${req.get('host')}/my-tours`,
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
-    customer_email: `${req.user.email}`,
+    customer_email: req.user.email,
     client_reference_id: req.params.tourId,
     line_items: [
       {
@@ -35,7 +35,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
         images: [
           `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
         ],
-        amount: tour.price * 80 * 100,
+        amount: tour.price * 100,
         currency: 'inr',
         quantity: 1,
       },
@@ -74,7 +74,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 const createBookingCheckout = async (session) => {
   const tour = session.client_reference_id;
   const user = (await User.findOne({ email: session.customer_email })).id;
-  const price = session.display_items[0].amount / (80 * 100);
+  const price = session.display_items[0].amount / 100;
   await Booking.create({
     tour,
     user,
@@ -89,7 +89,7 @@ exports.webhookCheckout = (req, res, next) => {
     event = stripe.webhooks.constructEvent(
       req.body,
       signature,
-      process.env.STRIPE_WEBHOOK.SECRET
+      process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (error) {
     // Error message for stripe---made-request
