@@ -1,0 +1,23 @@
+//- pug also understands the normal html content
+doctype html
+html
+    head
+        //-interpolation syntax
+        title Natours | #{tour} #{user} 
+        //- express.static() sets the public folder as the home folder for these resources, and we fetch them by http request for them
+        //-each resource has its own http request 
+        link(rel='stylesheet' href='css/style.css')
+        link(rel='shortcut icon' type='image/png' href='img/favicon.png')
+    body
+        //-buffered code
+        h1= tour 
+        //- can also run javascript
+        h2= user.toUpperCase() 
+        // h1 The Park Camper----will output as html comment 
+
+        //-unbuffered code---will not add anything to output
+        - const x = 9;
+        //- buffered code
+        h2= 2*x
+
+        p This is just some text
