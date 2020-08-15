@@ -71,9 +71,9 @@ module.exports = class Email {
     );
   }
 
-  async sendBookingConfirmation() {
-    await this.send('welcome', 'Your Booking was confirmed');
-  }
+  // async sendBookingConfirmation() {
+  //   await this.send('welcome', 'Your Booking was confirmed');
+  // }
 };
 
 // const sendEmail = async (options) => {
