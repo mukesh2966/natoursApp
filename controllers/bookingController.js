@@ -4,6 +4,7 @@ const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const Booking = require('../models/bookingModel');
+const Email = require('../utils/email');
 
 const factory = require('./handlerFactory');
 // const AppError = require('../utils/AppError');
@@ -71,7 +72,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 ////////////////////------------------------------------
 // this session data is sent by stripe via a post request at the webhook endpoint when the payment was successful.
 // this is exactly the same session that we sent to stripe, while starting the payment
-const createBookingCheckout = async (session) => {
+const createBookingCheckout = async (req, session) => {
   const tour = session.client_reference_id;
   const user = (await User.findOne({ email: session.customer_email })).id;
   const price = Math.ceil(session.display_items[0].amount / (74.89 * 100));
@@ -80,6 +81,10 @@ const createBookingCheckout = async (session) => {
     user,
     price,
   });
+  await new Email(
+    user,
+    `${req.protocol}://${req.get('host')}/my-tours`
+  ).sendBookingConfirmation();
 };
 
 exports.webhookCheckout = (req, res, next) => {
@@ -97,7 +102,7 @@ exports.webhookCheckout = (req, res, next) => {
   }
 
   if (event.type === 'checkout.session.completed') {
-    createBookingCheckout(event.data.object);
+    createBookingCheckout(req, event.data.object);
   }
 
   res.status(200).json({
