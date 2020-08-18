@@ -23,7 +23,10 @@ export const updateSettings = async (data, type) => {
     });
 
     if (res.data.status === 'success') {
-      showAlert('success', `User ${type.toUpperCase()} Changed Successfully`);
+      showAlert(
+        'success',
+        `User ${type.toUpperCase()} Changed Successfully. Please reload to view changes.`
+      );
     }
 
     // console.log(res);
