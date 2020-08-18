@@ -72,7 +72,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 ////////////////////------------------------------------
 // this session data is sent by stripe via a post request at the webhook endpoint when the payment was successful.
 // this is exactly the same session that we sent to stripe, while starting the payment
-const createBookingCheckout = async (session) => {
+const createBookingCheckout = async (session, req) => {
   const tour = session.client_reference_id;
   const userDoc = await User.findOne({ email: session.customer_email });
   const user = userDoc.id;
@@ -84,7 +84,8 @@ const createBookingCheckout = async (session) => {
   });
 
   // SEND NEW USER EMAIL
-  const url = `https://tour-stacks.herokuapp.com/my-tours`;
+  // const url = `https://tour-stacks.herokuapp.com/my-tours`;
+  const url = `${req.protocol}://${req.get('host')}/my-tours`;
   // console.log('this is the url', url);
 
   await new Email(userDoc, url).sendBookingConfirmation();
@@ -109,7 +110,7 @@ exports.webhookCheckout = (req, res, next) => {
   }
 
   if (event.type === 'checkout.session.completed') {
-    createBookingCheckout(event.data.object);
+    createBookingCheckout(event.data.object, req);
   }
 
   res.status(200).json({
