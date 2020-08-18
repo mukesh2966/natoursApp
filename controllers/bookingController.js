@@ -4,7 +4,7 @@ const Tour = require('../models/tourModel');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const Booking = require('../models/bookingModel');
-// const Email = require('../utils/email');
+const Email = require('../utils/email');
 
 const factory = require('./handlerFactory');
 // const AppError = require('../utils/AppError');
@@ -74,13 +74,20 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 // this is exactly the same session that we sent to stripe, while starting the payment
 const createBookingCheckout = async (session) => {
   const tour = session.client_reference_id;
-  const user = (await User.findOne({ email: session.customer_email })).id;
+  const userDoc = await User.findOne({ email: session.customer_email });
+  const user = userDoc.id;
   const price = Math.ceil(session.display_items[0].amount / (74.89 * 100));
   await Booking.create({
     tour,
     user,
     price,
   });
+
+  // SEND NEW USER EMAIL
+  const url = `https://tour-stacks.herokuapp.com/my-tours`;
+  // console.log('this is the url', url);
+
+  await new Email(userDoc, url).sendBookingConfirmation();
   // await new Email(
   //   user,
   //   `${req.protocol}://${req.get('host')}/my-tours`
