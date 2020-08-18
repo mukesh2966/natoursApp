@@ -46,3 +46,34 @@ export const logout = async () => {
     showAlert('error', 'Error logging out! Try Again.');
   }
 };
+
+//////-------------for signup
+export const signup = async (name, email, password, passwordConfirm) => {
+  try {
+    const res = await axios({
+      method: 'POST',
+      url: '/api/v1/users/signUp',
+      data: {
+        name: name,
+        email: email,
+        password,
+        passwordConfirm,
+        // role: 'admin',
+      },
+    });
+
+    if (res.data.status === 'success') {
+      document.getElementById('sign').textContent = 'SignUp Completed';
+      showAlert('success', 'Signned in successfully');
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 1500);
+    }
+
+    // console.log(res);
+  } catch (error) {
+    document.getElementById('sign').textContent = 'SIGN UP';
+    // console.log('from login.js', error.response.data.message);
+    showAlert('error', error.response.data.message);
+  }
+};

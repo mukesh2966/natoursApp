@@ -5,7 +5,11 @@ const handleJWTExpiredError = () => {
 };
 
 const handleJWTError = () => {
-  return new AppError('Invalid token. Please log in again', 401);
+  // return new AppError('Invalid token. Please log in again', 401);
+  return new AppError(
+    'You are not Logged In! Please log in and try again',
+    401
+  );
 };
 
 const handleCastErrorDB = (error1) => {
@@ -14,7 +18,12 @@ const handleCastErrorDB = (error1) => {
 };
 
 const handleDuplicateFieldsDB = (error1) => {
-  const message = `Tour name: <${error1.keyValue.name}> already exits.`;
+  const arr = Object.entries(error1.keyValue);
+  // arr has this kind of structure
+  // [ [ 'error field', 'error field value' ] ]
+  const message = `${arr[0][0]}: ${arr[0][1]} already exits.`;
+  // const { message } = error1;
+  console.log(message);
   return new AppError(message, 400);
 };
 
@@ -99,15 +108,18 @@ module.exports = (error, req, res, next) => {
   error.statusCode = error.statusCode || 500; //internal server err
   error.status = error.status || 'error';
 
+  console.log(process.env.NODE_ENV);
   //////////---------Development
   if (process.env.NODE_ENV === 'development') {
+    console.log('this is error:\n', error);
     sendErrorDev(error, req, res);
   } ////////////-------Production
   else if (process.env.NODE_ENV === 'production') {
     let error1 = { ...error };
+    console.log('this is error:\n', error);
     error1.message = error.message;
 
-    // console.log('this is error1:\n', error1);
+    console.log('this is error1:\n', error1);
 
     // here i dont know why but error object has the name field but does not include it when copied to error1/or can be said that the name of error is not visible to be copied to error1
     if (error.name === 'CastError') {

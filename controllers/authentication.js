@@ -34,7 +34,7 @@ const createSendToken = (user, statusCode, req, res) => {
     ),
     // secure: true, // cookie will only be sent on a HTTPS connection
     httpOnly: true, // this will make it so that the cookie cannot be accessed/modified by browsers
-    secure: req.secure || req.headers('x-forwarded-proto') === 'https',
+    secure: req.secure || req.headers('x-forwarded-proto') === 'https', //enable before production bitch
   });
 
   // Removes the password from client output

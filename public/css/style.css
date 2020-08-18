@@ -1322,3 +1322,7 @@ body {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
+
+input[type='passwordConfirm' i] {
+  -webkit-text-security: disc !important;
+}
