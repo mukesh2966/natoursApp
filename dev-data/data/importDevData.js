@@ -65,4 +65,4 @@ if (process.argv[2] === '--import') {
 }
 
 // gives a list of arguments of the command written in terminal
-console.log(process.argv);
+// console.log(process.argv);
